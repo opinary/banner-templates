@@ -1,0 +1,8 @@
+{
+    "version": "1.0",
+    "title": "Standard: Opinary Expandable",
+    "description": "Using appnexus-html5-lib-host",
+    "width": 300,
+    "height": 250,
+    "source": "index.html"
+}

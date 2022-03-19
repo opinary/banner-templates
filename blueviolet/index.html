@@ -1,0 +1,57 @@
+<html>
+    <head>
+    	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+        <script src="mraid.js"></script>
+        <style type="text/css">
+            .anx-mraid-close {
+                right: -50px !important
+            }
+        </style>
+
+        <script type="text/javascript">
+        function init() {
+            var success = false;
+            if (typeof mraid !== 'undefined') {
+                if (mraid.getState() === 'loading') {
+                    mraid.addEventListener('ready', displayAd);
+                } else if (mraid.getState() === 'default') {
+                    displayAd();
+                }
+                success = true;
+            }
+            return success;
+        }
+
+        function myclick() {
+            let url = new URLSearchParams(window.location.search).get('clickTAG');
+            console.log("click " + url);
+            mraid.open(url);
+        }
+
+        function displayAd() {
+            console.log("READY TO DISPLAY AD");
+
+            mraid.setResizeProperties({
+                "width": 320,
+                "height": 320,
+                "offsetX": 0,
+                "offsetY": 0,
+                "allowOffscreen": false
+            });
+
+            mraid.resize();
+
+            // initiate pressekompass with proper Macros
+            var div = document.getElementById("foo");
+            div.style.height = "320px";
+        }
+        </script>
+    </head>
+    <body onload="init();">
+        <div onclick="myclick()" id="foo" style="cursor: pointer; background-color: blueviolet; width:300px; height:250px ">
+
+            <div>MRAID Auto Expand Opinary</div>
+
+        </div>
+    </body>
+</html>
