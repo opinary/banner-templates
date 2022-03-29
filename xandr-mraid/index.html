@@ -2,6 +2,7 @@ document.write(`
 <!-- load valgrind -->
 <iframe
     id="opinary-iframe"
+    class="opinary-iframe"
     scrolling="no"
     marginheight="0"
     frameborder="0"
@@ -32,7 +33,7 @@ document.write(`
 </style>
 
 <script type="text/javascript">
-var isBifrost = window.frameElement && window.frameElement.id === "opinary-iframe";
+var isBifrost = window.frameElement && window.frameElement.className === "opinary-iframe";
 
 if (isBifrost) {
     update_iframe_url();
