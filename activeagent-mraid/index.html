@@ -1,5 +1,5 @@
 <script type="text/javascript" src="mraid.js"></script>
-<!-- load valgrind -->
+<!-- load valgrind, v1.1 -->
 <iframe
     id="opinary-iframe"
     class="opinary-iframe"
@@ -14,7 +14,7 @@
 <script type="text/javascript">
     function update_iframe_url() {
         let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/hermes/hermes_paket_versand_programmatic_0422';
-        var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_STRING}&voteTag=%clickurl:e%&clickTag=https%3A%2F%2Fadfarm1.adition.com%2Ftrack%3Ftid%3D[CID]%26sid%3D[SID]%26type%3Dimg%26orderid%3D%26itemno%3D%26descr%3D%26quantity%3D%26price%3D%26total%3D%26gdpr%3D${GDPR}%26gdpr_consent%3D${GDPR_CONSENT_40}";
+        var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_40}&voteTag=%clickurl:e%&clickTag=https%3A%2F%2Fadfarm1.adition.com%2Ftrack%3Ftid%3D[CID]%26sid%3D[SID]%26type%3Dimg%26orderid%3D%26itemno%3D%26descr%3D%26quantity%3D%26price%3D%26total%3D%26gdpr%3D${GDPR}%26gdpr_consent%3D${GDPR_CONSENT_40}";
         
         var iframe = document.getElementById('opinary-iframe');
         iframe.src = MEDIA_URL + urlparams;
@@ -29,11 +29,6 @@
 </style>
 
 <script type="text/javascript">
-var isBifrost = window.frameElement && window.frameElement.className === "opinary-iframe";
-
-if (isBifrost) {
-    update_iframe_url();
-
     function postMessageXandrBridge(propagateDown, propagateUp) {
         const isString = value => typeof value === 'string'
 
@@ -70,24 +65,18 @@ if (isBifrost) {
             }
         })
     }
+</script>
+
+<script type="text/javascript">
+var isBifrost = window.frameElement && window.frameElement.className === "opinary-iframe";
+var isXandrFrame = window.location.href.match(/^https:\/\/[a-z0-9]+-ib\.adnxs\.com/);
+
+if (isBifrost) {
+
 } else {
 
     function displayAd() {
-
-        // TODO: external SSP hardcoded size ?
-        let iframe = document.getElementById('opinary-iframe');
-        iframe.style.width = 300;
-        iframe.style.height = 300;
-        iframe.addEventListener('load', function() {
-            iframe.contentWindow.postMessage({
-                    type: 'opinary.xandr.macros',
-                    macros: {},
-                    size: { width: 300, height: 300 },
-                },
-                '*'
-            );
-        });
-
+        console.log("[mraid] update iframe url");
         update_iframe_url();
     }
 
@@ -118,12 +107,14 @@ if (isBifrost) {
         return success;
     })();
 
+    
     window.addEventListener('message', function(event) {
         
         if (typeof event.data === 'string') {
             const data = JSON.parse(event.data);
 
-            if (data.data.action == "ready") {
+            // FALSE translate valgrind calls (appnexus host html - into mraid calls)
+            if (false && data.data.action == "ready") {
                 const msg = JSON.stringify({
                     data: {
                         action: "setAdData",
@@ -136,10 +127,10 @@ if (isBifrost) {
                 iframe.contentWindow.postMessage(msg, '*');
             }
 
+            // translate valgrind calls (appnexus host html - into mraid calls)
             if (data.data.action === "expand") {
                 mraid.resize();
             }
-
             if (data.data.action === "set-expand-properties") {
                 // TODO: potentially add to midgard. This is needed, adform refuses if offsets are missing
                 let properties = Object.assign(data.data.properties, {
