@@ -1,5 +1,5 @@
 <script type="text/javascript" src="mraid.js"></script>
-<!-- load valgrind, v1.2 -->
+<!-- load valgrind, v1.4 -->
 <iframe
     id="opinary-iframe"
     class="opinary-iframe"
@@ -30,9 +30,44 @@
 
 <script type="text/javascript">
 var isBifrost = window.frameElement && window.frameElement.className === "opinary-iframe";
-var isXandrFrame = window.location.href.match(/^https:\/\/[a-z0-9]+-ib\.adnxs\.com/);
+var isXandrFrame = window.location.hostname.match(/^[a-z0-9]+-ib\.adnxs\.com/);
 var isStandadlone = !isBifrost && !isXandrFrame && !window.location.href.startsWith("http://127.0.0.1");
 
+// copy of xandrAdapter.js, with extra support for "actions"
+function postMessageXandrBridge(propagateDown, propagateUp) {
+    const isString = value => typeof value === 'string'
+
+    propagateDown = propagateDown.concat(['opinary.xandr.macros']);
+    propagateUpAction = ['ready', 'expand', 'set-expand-properties'];
+
+    window.addEventListener('message', function(event) {
+
+        let data = event.data;
+        if (isString(event.data)) {
+            data = JSON.parse(event.data);
+        }
+
+        const type = event.data.type;
+        const action = (data.data ? data.data.action: '');
+
+        if (propagateDown.includes(type)) {
+            const iframes = document.getElementsByTagName('iframe');
+
+            if (!iframes.length) return;
+            const els = [].slice.call(iframes);
+
+            try {
+                els.forEach(iframe => iframe.contentWindow.postMessage(data, '*'));
+            } catch (e) {}
+        }
+
+        if (propagateUp.includes(type) || propagateUpAction.includes(action)) {
+            window.parent.postMessage(data, '*');
+        }
+    })
+}
+
+// mode 1: used for preview
 if (isStandadlone) {
     let iframe = document.getElementById('opinary-iframe');
     iframe.style.width = 300;
@@ -49,51 +84,18 @@ if (isStandadlone) {
 
     update_iframe_url();
 
-} else {
+} 
 
-    // copied from https://github.com/opinary/bifrost/blob/master/src/lib/recommendations/xandrAdapter.js
-    function postMessageXandrBridge(propagateDown, propagateUp) {
-        const isString = value => typeof value === 'string'
+// mode 2: bifrost
+else if (isBifrost) {
+    update_iframe_url();
 
-        // TODO: forward xandr postmessage events
-        propagateUpAction = ['ready', 'expand', 'set-expand-properties'];
+}
 
-        window.addEventListener('message', function(event) {
-
-            let data = event.data;
-            if (isString(event.data)) {
-                data = JSON.parse(event.data);
-            }
-
-            const type = event.data.type;      
-            const action = (data.data ? data.data.action: '');
-
-            if (propagateDown.includes(type)) {
-                const iframes = document.getElementsByTagName('iframe');
-
-                if (!iframes.length) return;
-                const els = [].slice.call(iframes);
-
-                try {
-                    els.forEach(iframe => iframe.contentWindow.postMessage(data, '*'));
-                } catch (e) {}
-            }
-
-
-            if (propagateUp.includes(type) || propagateUpAction.includes(action)) {
-                window.parent.postMessage(data, '*');
-            }
-        })
-    }
-
-    // communicate between parent and child
-    postMessageXandrBridge('opinary.xandr.macros', []);
-
-    function displayAd() {
-        update_iframe_url();
-    }
-
-    // after ensuring mraid.js is loaded, call displayAd
+// mode 3: mraid
+else {
+    postMessageXandrBridge([], []);
+    
     (function() {
         var success = false;
         if (typeof mraid === 'undefined') {
@@ -104,15 +106,15 @@ if (isStandadlone) {
                 js.setAttribute('type', 'text/javascript');
                 js.setAttribute('src', s);
                 js.onload = function() {
-                    displayAd();
+                    update_iframe_url();
                 }
                 head.appendChild(js);
             })();
         } else {
             if (mraid.getState() === 'loading') {
-                mraid.addEventListener('ready', displayAd);
+                mraid.addEventListener('ready', update_iframe_url);
             } else if (mraid.getState() === 'default') {
-                displayAd();
+                update_iframe_url();
             }
             success = true;
         }
@@ -120,7 +122,6 @@ if (isStandadlone) {
         return success;
     })();
 
-    
     window.addEventListener('message', function(event) {
         
         if (typeof event.data === 'string') {
