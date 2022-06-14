@@ -14,10 +14,9 @@
 <script type="text/javascript">
     function update_iframe_url() {
         let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/audi/audi_wartung_ansprueche_6sek_dv360';
-        var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_755}&voteTag=${CLICK_URL_ENC}';
+        var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_755}&voteTag=${CLICK_URL_ENC}";
         var CLICK_URL_ENC = 'https://ad.doubleclick.net/ddm/trackclk/N394202.3386047PROGRAMMATICVIDEO/B27318152.338700001;dc_trk_aid=530374859;dc_trk_cid=167029226;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ltd=';
         
-        CLICK_URL_ENC = encodeURIComponent(CLICK_URL_ENC).replaceAll(/%24%7B(GDPR[^%]*)%7D/g, '\${$1}');
         var iframe = document.getElementById('opinary-iframe');
         iframe.src = MEDIA_URL + urlparams + (CLICK_URL_ENC ? '&clickTag=' + CLICK_URL_ENC : '');
     }
