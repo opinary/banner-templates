@@ -1,5 +1,6 @@
+
 <script type="text/javascript" src="mraid.js"></script>
-<!-- load valgrind, v1.4 -->
+<!-- load valgrind, v1.4.1 -->
 <iframe
     id="opinary-iframe"
     class="opinary-iframe"
@@ -14,7 +15,7 @@
 <script type="text/javascript">
     function update_iframe_url() {
         let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/zentiva/zentiva_heuschnupfensaison_program_0422';
-        var urlparams = "?gdpr=${GDPR}&gdpr_consent${GDPR_CONSENT_21}&voteTag=%%TTD_CLK%%";
+        var urlparams = "?gdpr=${GDPR}&gdpr_consent${GDPR_CONSENT_21}&voteTag=%%TTD_CLK_ESC%%";
         
         var iframe = document.getElementById('opinary-iframe');
         iframe.src = MEDIA_URL + urlparams;
