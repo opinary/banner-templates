@@ -1,5 +1,5 @@
 <script type="text/javascript" src="mraid.js"></script>
-<!-- load valgrind, v1.4.1 -->
+<!-- load valgrind, v1.5.1 -->
 <iframe
     id="opinary-iframe"
     class="opinary-iframe"
@@ -13,9 +13,17 @@
     ></iframe>
 <script type="text/javascript">
     function update_iframe_url() {
-        let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/audi/audi_wartung_ansprueche_6sek_dv360';
-        var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_755}&voteTag=${CLICK_URL_ENC}";
-        var CLICK_URL_ENC = 'https://ad.doubleclick.net/ddm/trackclk/N394202.3386047PROGRAMMATICVIDEO/B27318152.338700001;dc_trk_aid=530374859;dc_trk_cid=167029226;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ltd=';
+        let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/gsk/gsk_guertelrose_erreger_story_0522';
+        var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_755}";
+        urlparams += "&amp=*{OPINARY_AMP}&autsp=*{OPINARY_AUTOSP}&fusrc=*{OPINARY_FUSRC}&fuc=*{OPINARY_FUC}&prevPoll=*{OPINARY_PREV_POLL}&jid=*{OPINARY_JID}&pid=*{OPINARY_PID}&followUp=*{OPINARY_FOLLOWUP}&curl=${REFERER_URL_ENC}&embed=*{OPINARY_EMBED}&paywall=*{OPINARY_PAYWALL}&pub=*{OPINARY_CLIENT}&autlabel=*{OPINARY_AUTLABEL}&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_STRING}";
+        //&fuid=#{OPINARY_FOLLOWUP_ID}&campaign=#{OPINARY_AUTOMATION_ID}&distributionCampaign=${IO_CODE}
+
+        var VOTE_URL_ENC = '${CLICK_URL_ENC}';
+        if (!VOTE_URL_ENC.startsWith('$')) {
+            urlparams += "&voteTag=" + VOTE_URL_ENC;
+        }
+
+        var CLICK_URL_ENC = '';
         
         var iframe = document.getElementById('opinary-iframe');
         iframe.src = MEDIA_URL + urlparams + (CLICK_URL_ENC ? '&clickTag=' + CLICK_URL_ENC : '');
