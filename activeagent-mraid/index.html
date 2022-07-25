@@ -13,7 +13,7 @@
     ></iframe>
 <script type="text/javascript">
     function update_iframe_url() {
-        let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/hermes/hermes_paket_versand_programmatic_0422';
+        let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/opinary/otb_pr_opinary_hr_general_campaign_0722';
         var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_40}";
         urlparams += "&amp=*{OPINARY_AMP}&autsp=*{OPINARY_AUTOSP}&fusrc=*{OPINARY_FUSRC}&fuc=*{OPINARY_FUC}&prevPoll=*{OPINARY_PREV_POLL}&jid=*{OPINARY_JID}&pid=*{OPINARY_PID}&followUp=*{OPINARY_FOLLOWUP}&embed=*{OPINARY_EMBED}&paywall=*{OPINARY_PAYWALL}&pub=*{OPINARY_CLIENT}&autlabel=*{OPINARY_AUTLABEL}";
         //&fuid=#{OPINARY_FOLLOWUP_ID}&campaign=#{OPINARY_AUTOMATION_ID}&distributionCampaign=${IO_CODE}&curl=${REFERER_URL_ENC}
@@ -23,7 +23,8 @@
             urlparams += "&voteTag=" + VOTE_URL_ENC;
         }
         
-        var CLICK_URL = 'https://adfarm1.adition.com/track?tid=[CID]&sid=[SID]&type=img&orderid=&itemno=&descr=&quantity=&price=&total=&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_40}';
+        var CLICK_URL = '';
+        // https://adfarm1.adition.com/track?tid=[CID]&sid=[SID]&type=img&orderid=&itemno=&descr=&quantity=&price=&total=&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_40}
         
         var iframe = document.getElementById('opinary-iframe');
         iframe.src = MEDIA_URL + urlparams + (CLICK_URL ? '&clickTag=' + encodeURIComponent(CLICK_URL) : '');
