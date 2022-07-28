@@ -22,11 +22,11 @@
         if (!VOTE_URL_ENC.startsWith('$')) {
             urlparams += "&voteTag=" + VOTE_URL_ENC;
         }
-
-        var CLICK_URL_ENC = '';
+        
+        var CLICK_URL = '';
         
         var iframe = document.getElementById('opinary-iframe');
-        iframe.src = MEDIA_URL + urlparams + (CLICK_URL_ENC ? '&clickTag=' + CLICK_URL_ENC : '');
+        iframe.src = MEDIA_URL + urlparams + (CLICK_URL ? '&clickTag=' + encodeURIComponent(CLICK_URL) : '');
     }
 </script>
 
