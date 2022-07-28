@@ -1,4 +1,3 @@
-
 <script type="text/javascript" src="mraid.js"></script>
 <!-- load valgrind, v1.4.1 -->
 <iframe
@@ -15,10 +14,19 @@
 <script type="text/javascript">
     function update_iframe_url() {
         let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/zentiva/zentiva_heuschnupfensaison_program_0422';
-        var urlparams = "?gdpr=${GDPR}&gdpr_consent${GDPR_CONSENT_21}&voteTag=%%TTD_CLK_ESC%%";
+        var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_21}";
+        urlparams += "&amp=*{OPINARY_AMP}&autsp=*{OPINARY_AUTOSP}&fusrc=*{OPINARY_FUSRC}&fuc=*{OPINARY_FUC}&prevPoll=*{OPINARY_PREV_POLL}&jid=*{OPINARY_JID}&pid=*{OPINARY_PID}&followUp=*{OPINARY_FOLLOWUP}&curl=${REFERER_URL_ENC}&embed=*{OPINARY_EMBED}&paywall=*{OPINARY_PAYWALL}&pub=*{OPINARY_CLIENT}&autlabel=*{OPINARY_AUTLABEL}&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_STRING}";
+        //&fuid=#{OPINARY_FOLLOWUP_ID}&campaign=#{OPINARY_AUTOMATION_ID}&distributionCampaign=${IO_CODE}
+
+        var VOTE_URL_ENC = '%%TTD_CLK_ESC%%';
+        if (!VOTE_URL_ENC.startsWith('%%')) {
+            urlparams += "&voteTag=" + VOTE_URL_ENC;
+        }
+        
+        var CLICK_URL = '';
         
         var iframe = document.getElementById('opinary-iframe');
-        iframe.src = MEDIA_URL + urlparams;
+        iframe.src = MEDIA_URL + urlparams + (CLICK_URL ? '&clickTag=' + encodeURIComponent(CLICK_URL) : '');
     }
 </script>
 
