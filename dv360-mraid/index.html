@@ -1,5 +1,5 @@
 <script type="text/javascript" src="mraid.js"></script>
-<!-- load valgrind, v1.5.2 -->
+<!-- load valgrind, v1.5.3 -->
 <iframe
     id="opinary-iframe"
     class="opinary-iframe"
@@ -13,10 +13,10 @@
     ></iframe>
 <script type="text/javascript">
     function update_iframe_url() {
-        let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/opinary/opinary_pg_dv360_hr_general_0722';
-        var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_755}";
+        let MEDIA_URL = 'https://valgrind.pressekompass.net/compasses/opinary/opinary_pg_dv360_hr_general_0722?distributionCampaign=abc';
+        var urlparams = "&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_755}";
         urlparams += "&amp=*{OPINARY_AMP}&autsp=*{OPINARY_AUTOSP}&fusrc=*{OPINARY_FUSRC}&fuc=*{OPINARY_FUC}&prevPoll=*{OPINARY_PREV_POLL}&jid=*{OPINARY_JID}&pid=*{OPINARY_PID}&followUp=*{OPINARY_FOLLOWUP}&curl=${REFERER_URL_ENC}&embed=*{OPINARY_EMBED}&paywall=*{OPINARY_PAYWALL}&pub=*{OPINARY_CLIENT}&autlabel=*{OPINARY_AUTLABEL}&appIntegration=*{OPINARY_APP}";
-        //&fuid=#{OPINARY_FOLLOWUP_ID}&campaign=#{OPINARY_AUTOMATION_ID}&distributionCampaign=${IO_CODE}
+        //&fuid=#{OPINARY_FOLLOWUP_ID}&campaign=#{OPINARY_AUTOMATION_ID}
 
         var VOTE_URL_ENC = '${CLICK_URL_ENC}';
         if (!VOTE_URL_ENC.startsWith('$')) {
