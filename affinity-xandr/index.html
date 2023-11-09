@@ -1,5 +1,5 @@
 <script type="text/javascript" src="mraid.js"></script>
-<!-- affinity 1.1.1 -->
+<!-- affinity 1.2.0 -->
 <iframe
     id="opinary-iframe"
     class="opinary-iframe"
@@ -15,8 +15,8 @@
     function update_iframe_url() {
         let MEDIA_URL = 'https://valgrind.opinary.com/compasses/medtronic/medtronic_schlaf_300x250_1123?distributionCampaign=medtronic_diabetespumpe_story_1023';
         var urlparams = "&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_STRING}";
-        urlparams += "amp=false&autsp=true&followUp=false&curl=${SOURCE_URL_ENC}&embed=auto&paywall=anonymous&pub=affinityus&appIntegration=false";
-        urlparams += "&clickBehavior=link";
+        urlparams += "&amp=false&autsp=true&followUp=false&curl=${REFERER_URL_ENC}&embed=auto&paywall=anonymous&pub=affinityus&appIntegration=false";
+        //urlparams += "&clickBehavior=link";
 
         var VOTE_URL_ENC = '${CLICK_URL_ENC}';
         if (!VOTE_URL_ENC.startsWith('$')) {
@@ -27,43 +27,8 @@
         iframe.src = MEDIA_URL + urlparams + (CLICK_URL ? '&clickTag=' + encodeURIComponent(CLICK_URL) : '');
     }
 </script>
-<!-- MRAID 1: hide close button -->
-<style type="text/css">
-    .anx-mraid-close {
-        right: -50px !important
-    }
-</style>
 <script type="text/javascript">
-var isBifrost = window.frameElement && window.frameElement.className === "opinary-iframe";
-var isXandrFrame = window.location.hostname.match(/^[a-z0-9]+-ib\.adnxs\.com/);
-var isStandadlone = !isBifrost && !isXandrFrame && !window.location.href.startsWith("http://127.0.0.1");
-// copy of xandrAdapter.js, with extra support for "actions"
-function postMessageXandrBridge(propagateDown, propagateUp) {
-    const isString = value => typeof value === 'string'
-    propagateDown = propagateDown.concat(['opinary.xandr.macros']);
-    propagateUpAction = ['ready', 'expand', 'set-expand-properties'];
-    window.addEventListener('message', function(event) {
-        let data = event.data;
-        if (isString(event.data)) {
-            data = JSON.parse(event.data);
-        }
-        const type = event.data.type;
-        const action = (data.data ? data.data.action: '');
-        if (propagateDown.includes(type)) {
-            const iframes = document.getElementsByTagName('iframe');
-            if (!iframes.length) return;
-            const els = [].slice.call(iframes);
-            try {
-                els.forEach(iframe => iframe.contentWindow.postMessage(data, '*'));
-            } catch (e) {}
-        }
-        if (propagateUp.includes(type) || propagateUpAction.includes(action)) {
-            window.parent.postMessage(data, '*');
-        }
-    })
-}
-// mode 1: used for preview
-if (isStandadlone) {
+if (true) {
     let iframe = document.getElementById('opinary-iframe');
     iframe.style.width = 300;
     iframe.style.height = 250;
@@ -77,66 +42,5 @@ if (isStandadlone) {
         );
     });
     update_iframe_url();
-}
-// mode 2: bifrost
-else if (isBifrost) {
-    update_iframe_url();
-}
-// mode 3: mraid
-else {
-    postMessageXandrBridge([], []);
-    (function() {
-        var success = false;
-        if (typeof mraid === 'undefined') {
-            (function() {
-                var head = document.head,
-                    js = document.createElement('script'),
-                    s = 'mraid.js';
-                js.setAttribute('type', 'text/javascript');
-                js.setAttribute('src', s);
-                js.onload = function() {
-                    update_iframe_url();
-                }
-                head.appendChild(js);
-            })();
-        } else {
-            if (mraid.getState() === 'loading') {
-                mraid.addEventListener('ready', update_iframe_url);
-            } else if (mraid.getState() === 'default') {
-                update_iframe_url();
-            }
-            success = true;
-        }
-        return success;
-    })();
-    window.addEventListener('message', function(event) {
-        if (typeof event.data === 'string') {
-            const data = JSON.parse(event.data);
-            if (data.data.action == "ready") {
-                const msg = JSON.stringify({
-                    data: {
-                        action: "setAdData",
-                        parameters: {
-                            "opinary": 1
-                        }
-                    }
-                });
-                let iframe = document.getElementById('opinary-iframe');
-                iframe.contentWindow.postMessage(msg, '*');
-            }
-            if (data.data.action === "expand") {
-                mraid.resize();
-            }
-            if (data.data.action === "set-expand-properties") {
-                // TODO: potentially add to midgard. This is needed, adform refuses if offsets are missing
-                let properties = Object.assign(data.data.properties, {
-                    "offsetX": 0,
-                    "offsetY": 0,
-                    "allowOffscreen": false
-                });
-                mraid.setResizeProperties(properties);
-            }
-        }
-    });
 }
 </script>
