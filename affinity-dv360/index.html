@@ -1,0 +1,48 @@
+<script type="text/javascript" src="mraid.js"></script>
+<!-- affinity-dv360-programmatic-supply 2.0.0 -->
+<iframe
+    id="opinary-iframe"
+    class="opinary-iframe"
+    scrolling="no"
+    marginheight="0"
+    frameborder="0"
+    no-mw-resize="true"
+    allow="fullscreen"
+    style="width:100%; height:100vh"
+    src=""
+    ></iframe>
+<script type="text/javascript">
+    function update_iframe_url() {
+        let MEDIA_URL = 'https://valgrind.opinary.com/compasses/medtronic/medtronic_schlaf_300x250_1123?distributionCampaign=medtronic_diabetespumpe_story_1023&pub=xandr_de';
+        var urlparams = "&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_755}";
+        urlparams += "&amp=false&autsp=true&followUp=false&curl=${SOURCE_URL_ENC}&embed=auto&paywall=anonymous&appIntegration=false";
+
+        // preferred by Affinity
+        // urlparams += "&clickBehavior=link";
+
+        var VOTE_URL_ENC = '${CLICK_URL_ENC}';
+        if (!VOTE_URL_ENC.startsWith('$')) {
+            urlparams += "&voteTag=" + VOTE_URL_ENC;
+        }
+        var CLICK_URL = '';
+        var iframe = document.getElementById('opinary-iframe');
+        iframe.src = MEDIA_URL + urlparams + (CLICK_URL ? '&clickTag=' + encodeURIComponent(CLICK_URL) : '');
+    }
+</script>
+<script type="text/javascript">
+if (true) {
+    let iframe = document.getElementById('opinary-iframe');
+    iframe.style.width = 300;
+    iframe.style.height = 250;
+    iframe.addEventListener('load', function() {
+        iframe.contentWindow.postMessage({
+                type: 'opinary.xandr.macros',
+                macros: {},
+                size: { width: 300, height: 250 },
+            },
+            '*'
+        );
+    });
+    update_iframe_url();
+}
+</script>
