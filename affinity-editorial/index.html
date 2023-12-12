@@ -1,5 +1,3 @@
-<script type="text/javascript" src="mraid.js"></script>
-<!-- xandr-programmatic-supply 1.0.0 -->
 <iframe
     id="opinary-iframe"
     class="opinary-iframe"
@@ -13,34 +11,35 @@
     ></iframe>
 <script type="text/javascript">
     function update_iframe_url() {
-        let MEDIA_URL = 'https://valgrind.opinary.com/compasses/medtronic/medtronic_schlaf_300x250_1123?distributionCampaign=medtronic_diabetespumpe_story_1023&pub=xandr_de';
-        var urlparams = "&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_STRING}";
-        urlparams += "&amp=false&autsp=true&followUp=false&curl=${REFERER_URL_ENC}&embed=auto&paywall=anonymous&appIntegration=false";
-        //urlparams += "&clickBehavior=link";
+        let MEDIA_URL = 'https://valgrind.opinary.com/compasses/test_opinary_mcanvas_publisher/how-do-you-like-to-travel_productionengl';
+        var urlparams = "?gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_STRING}";
+        urlparams += "&embed=embed&paywall=anonymous&fullWidth=false&integrationType=iframe&referrer=${REFERER_URL_ENC}&noLocalStorage=true&bifrost=false&adblocker=false";
 
         var VOTE_URL_ENC = '${CLICK_URL_ENC}';
         if (!VOTE_URL_ENC.startsWith('$')) {
             urlparams += "&voteTag=" + VOTE_URL_ENC;
         }
-        var CLICK_URL = '';
+        
         var iframe = document.getElementById('opinary-iframe');
-        iframe.src = MEDIA_URL + urlparams + (CLICK_URL ? '&clickTag=' + encodeURIComponent(CLICK_URL) : '');
+        iframe.src = MEDIA_URL + urlparams;
     }
 </script>
 <script type="text/javascript">
 if (true) {
     let iframe = document.getElementById('opinary-iframe');
-    iframe.style.width = 300;
-    iframe.style.height = 250;
+    iframe.style.width = 320;
+    iframe.style.height = 320;
     iframe.addEventListener('load', function() {
         iframe.contentWindow.postMessage({
                 type: 'opinary.xandr.macros',
                 macros: {},
-                size: { width: 300, height: 250 },
+                size: { width: 320, height: 320 },
             },
             '*'
         );
     });
+
     update_iframe_url();
+
 }
 </script>
